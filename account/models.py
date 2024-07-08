@@ -20,7 +20,7 @@ class User(AbstractUser):
         verbose_name_plural = 'пользователи'
         ordering = ('-date_joined',)
 
-    username = models.CharField(max_length=100, verbose_name='фио')
+    username = models.CharField(max_length=100,unique=True, verbose_name='фио')
     Idpassporta = models.CharField(max_length=7,verbose_name='ID possport')
     organ_vidachi = models.CharField(max_length=10, verbose_name='орган выдачи')
     personal_number_passport = models.CharField(max_length=14, verbose_name='персональный номер паспорта')
@@ -33,7 +33,7 @@ class User(AbstractUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'phone'
+    USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
     @property
