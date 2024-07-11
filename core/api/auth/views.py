@@ -51,9 +51,9 @@ class UserRegistrationView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        refresh = RefreshToken.for_user(user)
+        token, created = Token.objects.get_or_create(user=user) # (token, False)
         read_serializer = ReadUserSerializer(user, context={'request': request})
-        data = {**read_serializer.data, 'refresh': str(refresh), 'access': str(refresh.access_token)}
+        data = {**read_serializer.data, 'token': token.key}
         headers = self.get_success_headers(serializer.data)
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
 
